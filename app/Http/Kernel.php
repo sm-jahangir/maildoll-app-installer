@@ -3,6 +3,8 @@
 namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use App\Http\Middleware\InstallCheck;
+use App\Http\Middleware\Installed;
 
 class Kernel extends HttpKernel
 {
@@ -63,5 +65,8 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        // For Installation
+        'install.check' => InstallCheck::class,
+        'installed' => Installed::class,
     ];
 }

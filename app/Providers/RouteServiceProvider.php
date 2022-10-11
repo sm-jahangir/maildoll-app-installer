@@ -35,6 +35,11 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
+
+            // For Installation
+            Route::middleware('web')
+                ->group(base_path('routes/install.php')); // Load the install routes
+
         });
     }
 
