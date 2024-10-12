@@ -1755,18 +1755,33 @@ function activeCurrencySymbol()
 }
 
 //override or add env file or key
-function overWriteEnvFile($type, $val)
-{
-    $path = base_path('.env');
-    if (file_exists($path)) {
-        $val = '"' . trim($val) . '"';
-        if (is_numeric(strpos(file_get_contents($path), $type)) && strpos(file_get_contents($path), $type) >= 0) {
-            file_put_contents($path, str_replace($type . '="' . env($type) . '"', $type . '=' . $val, file_get_contents($path)));
-        } else {
-            file_put_contents($path, file_get_contents($path) . "\r\n" . $type . '=' . $val);
+if (!function_exists('overWriteEnvFile')) {
+    function overWriteEnvFile($type, $val)
+    {
+        $path = base_path('.env');
+        if (file_exists($path)) {
+            $val = '"' . trim($val) . '"'; // Wrap in double quotes
+            $fileContent = file_get_contents($path);
+
+            // Check if the key already exists in the .env file
+            if (strpos($fileContent, $type . '=') !== false) {
+                // Replace existing value
+                $fileContent = preg_replace(
+                    '/' . $type . '=[^\n]*/',
+                    $type . '=' . $val,
+                    $fileContent
+                );
+            } else {
+                // Append new value
+                $fileContent .= "\r\n" . $type . '=' . $val;
+            }
+
+            // Write the updated content back to the .env file
+            file_put_contents($path, $fileContent);
         }
     }
 }
+
 
 //get system setting data
 function getSystemSetting($key)

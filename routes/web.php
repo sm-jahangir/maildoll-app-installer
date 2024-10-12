@@ -27,3 +27,8 @@ Route::group(['middleware' => 'installed'], function () {
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 });
+
+
+Route::get('frontend-index', function () {
+    return "Hello world";
+})->name('frontend.index');
